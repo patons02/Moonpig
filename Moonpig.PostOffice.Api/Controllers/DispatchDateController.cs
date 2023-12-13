@@ -13,22 +13,28 @@
         [HttpGet]
         public DispatchDate GetDispatchDate(List<int> productIds, DateTime orderDate)
         {
-            DateTime maxLeadDate = orderDate; // max lead time
+            return GetMaxLeadDate(productIds, orderDate);
+        }
+
+        private static DispatchDate GetMaxLeadDate(List<int> productIds, DateTime orderDate)
+        {
+            DateTime maxLeadDate = orderDate;
+
             foreach (var productId in productIds)
             {
                 DbContext dbContext = new DbContext();
                 int supplierId = dbContext.Products.Single(x => x.ProductId == productId).SupplierId;
-                var leadTime = dbContext.Suppliers.Single(x => x.SupplierId == supplierId).LeadTime;
+                int leadTime = dbContext.Suppliers.Single(x => x.SupplierId == supplierId).LeadTime;
                 if (orderDate.AddDays(leadTime) > maxLeadDate)
                     maxLeadDate = orderDate.AddDays(leadTime);
             }
-            if (maxLeadDate.DayOfWeek == DayOfWeek.Saturday)
-            {
+            
+            if (orderDate.DayOfWeek == DayOfWeek.Saturday || orderDate.DayOfWeek == DayOfWeek.Friday) 
                 return new DispatchDate { Date = maxLeadDate.AddDays(2) };
-            }
-            
-            if (maxLeadDate.DayOfWeek == DayOfWeek.Sunday) return new DispatchDate { Date = maxLeadDate.AddDays(1) };
-            
+
+            if (orderDate.DayOfWeek == DayOfWeek.Sunday)
+                return new DispatchDate { Date = maxLeadDate.AddDays(1) };
+
             return new DispatchDate { Date = maxLeadDate };
         }
     }
