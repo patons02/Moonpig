@@ -11,41 +11,78 @@
         [Fact]
         public void OneProductWithLeadTimeOfOneDay()
         {
+            DateTime orderDate = new DateTime(2018, 1, 1);
+            DateTime dispatchDate = new DateTime(2018, 1, 2);
+
             DispatchDateController controller = new DispatchDateController();
-            var date = controller.GetDispatchDate(new List<int>() {1}, DateTime.Now);
-            date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(1));
+            var date = controller.GetDispatchDate(new List<int>() {1}, orderDate);
+            date.Date.Date.ShouldBe(dispatchDate);
         }
 
         [Fact]
         public void OneProductWithLeadTimeOfTwoDay()
         {
+            DateTime orderDate = new DateTime(2018, 1, 1);
+            DateTime dispatchDate = new DateTime(2018, 1, 3);
+
             DispatchDateController controller = new DispatchDateController();
-            var date = controller.GetDispatchDate(new List<int>() { 2 }, DateTime.Now);
-            date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(2));
+            var date = controller.GetDispatchDate(new List<int>() { 2 }, orderDate);
+            date.Date.Date.ShouldBe(dispatchDate);
         }
 
         [Fact]
         public void OneProductWithLeadTimeOfThreeDay()
         {
+            DateTime orderDate = new DateTime(2018, 1, 1);
+            DateTime dispatchDate = new DateTime(2018, 1, 4);
+
             DispatchDateController controller = new DispatchDateController();
-            var date = controller.GetDispatchDate(new List<int>() { 3 }, DateTime.Now);
-            date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(3));
+            var date = controller.GetDispatchDate(new List<int>() { 3 }, orderDate);
+            date.Date.Date.ShouldBe(dispatchDate);
         }
 
         [Fact]
-        public void SaturdayHasExtraTwoDays()
+        public void TwoProductWithMaxLeadTimeOfTwoDay()
         {
+            DateTime orderDate = new DateTime(2018, 1, 1);
+            DateTime dispatchDate = new DateTime(2018, 1, 3);
+
             DispatchDateController controller = new DispatchDateController();
-            var date = controller.GetDispatchDate(new List<int>() { 1 }, new DateTime(2018,1,26));
-            date.Date.ShouldBe(new DateTime(2018, 1, 26).Date.AddDays(3));
+            var date = controller.GetDispatchDate(new List<int>() { 1, 2 }, orderDate);
+            date.Date.Date.ShouldBe(dispatchDate);
         }
 
         [Fact]
-        public void SundayHasExtraDay()
+        public void FridayHasExtraTwoDays()
         {
+            DateTime orderDate = new DateTime(2018, 1, 5);
+            DateTime dispatchDate = new DateTime(2018, 1, 8);
+
             DispatchDateController controller = new DispatchDateController();
-            var date = controller.GetDispatchDate(new List<int>() { 3 }, new DateTime(2018, 1, 25));
-            date.Date.ShouldBe(new DateTime(2018, 1, 25).Date.AddDays(4));
+            var date = controller.GetDispatchDate(new List<int>() { 1 }, orderDate);
+            date.Date.ShouldBe(dispatchDate);
+        }
+
+        [Fact]
+        public void SaturdayHasExtraThreeDays()
+        {
+            DateTime orderDate = new DateTime(2018, 1, 6);
+            DateTime dispatchDate = new DateTime(2018, 1, 9);
+
+            DispatchDateController controller = new DispatchDateController();
+            var date = controller.GetDispatchDate(new List<int>() { 1 }, orderDate);
+            date.Date.ShouldBe(dispatchDate);
+        }
+
+        [Fact]
+        public void SundayHasExtraTwoDays()
+        {
+            DateTime orderDate = new DateTime(2018, 1, 7);
+            DateTime dispatchDate = new DateTime(2018, 1, 9);
+
+            DispatchDateController controller = new DispatchDateController();
+            var date = controller.GetDispatchDate(new List<int>() { 1 }, orderDate);
+            date.Date.ShouldBe(dispatchDate);
         }
     }
 }
