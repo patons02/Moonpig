@@ -84,5 +84,27 @@
             var date = controller.GetDispatchDate(new List<int>() { 1 }, orderDate);
             date.Date.ShouldBe(dispatchDate);
         }
+
+        [Fact]
+        public void OneProductWithLeadTimeOfSixDay()
+        {
+            DateTime orderDate = new DateTime(2018, 1, 5);
+            DateTime dispatchDate = new DateTime(2018, 1, 15);
+
+            DispatchDateController controller = new DispatchDateController();
+            var date = controller.GetDispatchDate(new List<int>() { 9 }, orderDate);
+            date.Date.ShouldBe(dispatchDate);
+        }
+
+        [Fact]
+        public void OneProductWithLeadTimeOfElevenDay()
+        {
+            DateTime orderDate = new DateTime(2018, 1, 5);
+            DateTime dispatchDate = new DateTime(2018, 1, 22);
+
+            DispatchDateController controller = new DispatchDateController();
+            var date = controller.GetDispatchDate(new List<int>() { 10 }, orderDate);
+            date.Date.ShouldBe(dispatchDate);
+        }
     }
 }

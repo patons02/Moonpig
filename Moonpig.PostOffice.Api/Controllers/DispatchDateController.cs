@@ -26,16 +26,27 @@
                 int supplierId = dbContext.Products.Single(x => x.ProductId == productId).SupplierId;
                 int leadTime = dbContext.Suppliers.Single(x => x.SupplierId == supplierId).LeadTime;
                 if (orderDate.AddDays(leadTime) > maxLeadDate)
+                {
+                    leadTime = CalculateLeadDate(orderDate, leadTime);
                     maxLeadDate = orderDate.AddDays(leadTime);
+                }
             }
-            
-            if (orderDate.DayOfWeek == DayOfWeek.Saturday || orderDate.DayOfWeek == DayOfWeek.Friday) 
-                return new DispatchDate { Date = maxLeadDate.AddDays(2) };
-
-            if (orderDate.DayOfWeek == DayOfWeek.Sunday)
-                return new DispatchDate { Date = maxLeadDate.AddDays(1) };
 
             return new DispatchDate { Date = maxLeadDate };
+        }
+
+        private static int CalculateLeadDate(DateTime orderDate, int leadTime)
+        {
+            
+            for (int i = 0; i <= leadTime; i++)
+            {
+                if (orderDate.AddDays(i).DayOfWeek == DayOfWeek.Saturday || orderDate.AddDays(i).DayOfWeek == DayOfWeek.Sunday)
+                {
+                    leadTime ++;
+                }
+            }
+
+            return leadTime;
         }
     }
 }
