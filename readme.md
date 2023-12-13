@@ -99,13 +99,28 @@ document.
 
 Q1. What 'code smells' / anti-patterns did you find in the existing 
 	implementation of part 1 & 2?
+	
+	initially public variable
+	program class not static
+	unclearly named variables
+	badly named method in API
 
 Q2. What best practices have you used while implementing your solution?
+	
+	Clean Code 
+	Separated into separate functions
 
 Q3. What further steps would you take to improve the solution given more time?
+	
+	Extract into service use DI and Mock
+	Look at implementing a lookup for Bank holidays
+	Look at if data needs implementation based on region/country
+	Look at implementing await/async
 
 Q4. What's a technology that you're excited about and where do you see this 
     being applicable? (Your answer does not have to be related to this problem)
+	
+	building a user profile and using it creating personalised content and relevant products.
 
 ## Request and Response Examples
 
